@@ -512,7 +512,7 @@ async def main():
     
     # Установить команды бота (появятся в меню)
     try:
-        await bot.set_my_commands([
+        result = await bot.set_my_commands([
             {"name": "start", "description": "Запустить бота"},
             {"name": "menu", "description": "Показать главное меню"},
             {"name": "help", "description": "Справка"},
