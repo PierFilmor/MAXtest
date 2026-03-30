@@ -30,13 +30,12 @@ logger = logging.getLogger(__name__)
 bot = Bot()
 dp = Dispatcher()
 
-
 # --- Конфигурация клавиатур ---
 
 def get_main_menu_keyboard() -> InlineKeyboardBuilder:
     """Создает главное меню с основными разделами."""
     builder = InlineKeyboardBuilder()
-
+    
     builder.row(
         CallbackButton(text="📋 Услуги", payload="menu_services"),
         CallbackButton(text="💰 Цены", payload="menu_prices"),
@@ -45,14 +44,13 @@ def get_main_menu_keyboard() -> InlineKeyboardBuilder:
         CallbackButton(text="📞 Контакты", payload="menu_contacts"),
         CallbackButton(text="ℹ️ О боте", payload="menu_about"),
     )
-
+    
     return builder
-
 
 def get_services_keyboard() -> InlineKeyboardBuilder:
     """Создает меню услуг."""
     builder = InlineKeyboardBuilder()
-
+    
     builder.row(
         CallbackButton(text="🚀 Разработка", payload="service_dev"),
         CallbackButton(text="🎨 Дизайн", payload="service_design"),
@@ -61,14 +59,13 @@ def get_services_keyboard() -> InlineKeyboardBuilder:
         CallbackButton(text="📈 Маркетинг", payload="service_marketing"),
         CallbackButton(text="⬅️ Назад", payload="back_to_main"),
     )
-
+    
     return builder
-
 
 def get_prices_keyboard() -> InlineKeyboardBuilder:
     """Создает меню цен."""
     builder = InlineKeyboardBuilder()
-
+    
     builder.row(
         CallbackButton(text="📦 Тарифы", payload="prices_tariffs"),
         CallbackButton(text="💳 Оплата", payload="prices_payment"),
@@ -76,14 +73,13 @@ def get_prices_keyboard() -> InlineKeyboardBuilder:
     builder.row(
         CallbackButton(text="⬅️ Назад", payload="back_to_main"),
     )
-
+    
     return builder
-
 
 def get_contacts_keyboard() -> InlineKeyboardBuilder:
     """Создает меню контактов."""
     builder = InlineKeyboardBuilder()
-
+    
     builder.row(
         CallbackButton(text="📧 Написать на почту", payload="contact_email"),
         CallbackButton(text="📱 Позвонить", payload="contact_phone"),
@@ -91,9 +87,8 @@ def get_contacts_keyboard() -> InlineKeyboardBuilder:
     builder.row(
         CallbackButton(text="⬅️ Назад", payload="back_to_main"),
     )
-
+    
     return builder
-
 
 # --- Обработчики событий ---
 
@@ -101,7 +96,7 @@ def get_contacts_keyboard() -> InlineKeyboardBuilder:
 async def on_bot_started(event: BotStarted):
     """Обработчик события запуска бота."""
     logger.info(f"Бот запущен пользователем: {event.chat_id}")
-
+    
     text = (
         "👋 Привет! Я тестовый бот для мессенджера MAX!\n\n"
         "Я умею:\n"
@@ -110,29 +105,27 @@ async def on_bot_started(event: BotStarted):
         "• Понимать команды\n\n"
         "Нажмите кнопку ниже, чтобы начать 👇"
     )
-
+    
     await event.bot.send_message(
         chat_id=event.chat_id,
         text=text,
         attachments=[get_main_menu_keyboard().as_markup()]
     )
 
-
 @dp.message_created(Command('start'))
 async def on_start(event: MessageCreated):
     """Обработчик команды /start."""
     logger.info(f"Команда /start от пользователя: {event.chat_id}")
-
+    
     text = (
         "🚀 Бот перезапущен!\n\n"
         "Выберите раздел из меню ниже:"
     )
-
+    
     await event.message.answer(
         text=text,
         attachments=[get_main_menu_keyboard().as_markup()]
     )
-
 
 @dp.message_created(Command('menu'))
 async def on_menu(event: MessageCreated):
@@ -141,7 +134,6 @@ async def on_menu(event: MessageCreated):
         text="📋 Главное меню:",
         attachments=[get_main_menu_keyboard().as_markup()]
     )
-
 
 @dp.message_created(Command('help'))
 async def on_help(event: MessageCreated):
@@ -157,23 +149,21 @@ async def on_help(event: MessageCreated):
         "/about - О боте\n\n"
         "Также вы можете просто писать сообщения - я пойму и отвечу! 💬"
     )
-
+    
     await event.message.answer(text=text, parse_mode="Markdown")
-
 
 @dp.message_created(Command('services'))
 async def on_services(event: MessageCreated):
     """Показать услуги."""
     await event.message.answer(
         text="📋 **Наши услуги:**\n\n"
-             "• 🚀 Разработка сайтов и приложений\n"
-             "• 🎨 Графический и веб-дизайн\n"
-             "• 📈 Маркетинг и продвижение\n\n"
-             "Выберите интересующую услугу:",
+        "• 🚀 Разработка сайтов и приложений\n"
+        "• 🎨 Графический и веб-дизайн\n"
+        "• 📈 Маркетинг и продвижение\n\n"
+        "Выберите интересующую услугу:",
         parse_mode="Markdown",
         attachments=[get_services_keyboard().as_markup()]
     )
-
 
 @dp.message_created(Command('prices'))
 async def on_prices(event: MessageCreated):
@@ -185,13 +175,12 @@ async def on_prices(event: MessageCreated):
         "• 📈 Маркетинг: от 30 000 ₽\n\n"
         "Уточните детали у менеджера!"
     )
-
+    
     await event.message.answer(
         text=text,
         parse_mode="Markdown",
         attachments=[get_prices_keyboard().as_markup()]
     )
-
 
 @dp.message_created(Command('contacts'))
 async def on_contacts(event: MessageCreated):
@@ -203,13 +192,12 @@ async def on_contacts(event: MessageCreated):
         "📍 Адрес: г. Москва, ул. Примерная, д. 1\n\n"
         "Выберите способ связи:"
     )
-
+    
     await event.message.answer(
         text=text,
         parse_mode="Markdown",
         attachments=[get_contacts_keyboard().as_markup()]
     )
-
 
 @dp.message_created(Command('about'))
 async def on_about(event: MessageCreated):
@@ -226,9 +214,8 @@ async def on_about(event: MessageCreated):
         "✅ Команды\n"
         "✅ Обработку callback-запросов"
     )
-
+    
     await event.message.answer(text=text, parse_mode="Markdown")
-
 
 # --- Обработчики текстовых сообщений ---
 
@@ -242,15 +229,13 @@ async def on_greeting(event: MessageCreated):
         "👋 Привет! Рад вас видеть!\n\n"
         "Чем могу помочь? Выберите раздел из меню или напишите свой вопрос."
     )
-
+    
     await event.message.answer(
         text=text,
         attachments=[get_main_menu_keyboard().as_markup()]
     )
 
-
-@dp.message_created(F.message.body.text.lower().contains("цена") | F.message.body.text.lower().contains(
-    "стоимость") | F.message.body.text.lower().contains("сколько стоит"))
+@dp.message_created(F.message.body.text.lower().contains("цена") | F.message.body.text.lower().contains("стоимость") | F.message.body.text.lower().contains("сколько стоит"))
 async def on_price_request(event: MessageCreated):
     """Ответ на запросы о ценах."""
     text = (
@@ -260,16 +245,14 @@ async def on_price_request(event: MessageCreated):
         "• 📈 Маркетинг: от 30 000 ₽\n\n"
         "Точная стоимость зависит от задачи. Хотите узнать подробнее?"
     )
-
+    
     await event.message.answer(
         text=text,
         parse_mode="Markdown",
         attachments=[get_prices_keyboard().as_markup()]
     )
 
-
-@dp.message_created(F.message.body.text.lower().contains("телефон") | F.message.body.text.lower().contains(
-    "контакт") | F.message.body.text.lower().contains("связаться"))
+@dp.message_created(F.message.body.text.lower().contains("телефон") | F.message.body.text.lower().contains("контакт") | F.message.body.text.lower().contains("связаться"))
 async def on_contact_request(event: MessageCreated):
     """Ответ на запросы о контактах."""
     text = (
@@ -280,16 +263,14 @@ async def on_contact_request(event: MessageCreated):
         "📍 Адрес: г. Москва, ул. Примерная, д. 1\n\n"
         "Выберите удобный способ связи:"
     )
-
+    
     await event.message.answer(
         text=text,
         parse_mode="Markdown",
         attachments=[get_contacts_keyboard().as_markup()]
     )
 
-
-@dp.message_created(F.message.body.text.lower().contains("помощь") | F.message.body.text.lower().contains(
-    "ошибка") | F.message.body.text.lower().contains("проблема"))
+@dp.message_created(F.message.body.text.lower().contains("помощь") | F.message.body.text.lower().contains("ошибка") | F.message.body.text.lower().contains("проблема"))
 async def on_help_request(event: MessageCreated):
     """Ответ на запросы о помощи."""
     text = (
@@ -300,12 +281,10 @@ async def on_help_request(event: MessageCreated):
         "3. Описать проблему здесь, и я помогу!\n\n"
         "Что именно вас беспокоит?"
     )
-
+    
     await event.message.answer(text=text)
 
-
-@dp.message_created(F.message.body.text.lower().contains("купить") | F.message.body.text.lower().contains(
-    "заказать") | F.message.body.text.lower().contains("оформить"))
+@dp.message_created(F.message.body.text.lower().contains("купить") | F.message.body.text.lower().contains("заказать") | F.message.body.text.lower().contains("оформить"))
 async def on_order_request(event: MessageCreated):
     """Ответ на запросы о заказе."""
     text = (
@@ -317,15 +296,13 @@ async def on_order_request(event: MessageCreated):
         "• Какие сроки вас устраивают?\n\n"
         "Или выберите услугу из меню ниже:"
     )
-
+    
     await event.message.answer(
         text=text,
         attachments=[get_services_keyboard().as_markup()]
     )
 
-
-@dp.message_created(F.message.body.text.lower().contains("кто ты") | F.message.body.text.lower().contains(
-    "информация") | F.message.body.text.lower().contains("о боте"))
+@dp.message_created(F.message.body.text.lower().contains("кто ты") | F.message.body.text.lower().contains("информация") | F.message.body.text.lower().contains("о боте"))
 async def on_about_request(event: MessageCreated):
     """Ответ на запросы о боте."""
     text = (
@@ -339,15 +316,14 @@ async def on_about_request(event: MessageCreated):
         "/help - справка\n"
         "/services - услуги"
     )
-
+    
     await event.message.answer(text=text, parse_mode="Markdown")
-
 
 @dp.message_created(F.message.body.text)
 async def on_default_text(event: MessageCreated):
     """Обработчик всех остальных текстовых сообщений."""
     text = event.message.body.text
-
+    
     response = (
         f"🤔 Вы написали: «{text}»\n\n"
         "Я пока не совсем понял этот вопрос, но могу предложить:\n\n"
@@ -356,56 +332,52 @@ async def on_default_text(event: MessageCreated):
         "• Связаться с менеджером\n\n"
         "Выберите что-нибудь из меню ниже 👇"
     )
-
+    
     await event.message.answer(
         text=response,
         attachments=[get_main_menu_keyboard().as_markup()]
     )
-
 
 # --- Обработчики callback-кнопок ---
 
 @dp.message_callback(F.callback.payload == "menu_services")
 async def callback_services(event: MessageCallback):
     """Обработка нажатия на кнопку 'Услуги'."""
-    await event.message.edit_text(
-        text="📋 **Наши услуги:**\n\n"
-             "• 🚀 Разработка сайтов и приложений\n"
-             "• 🎨 Графический и веб-дизайн\n"
-             "• 📈 Маркетинг и продвижение\n\n"
-             "Выберите интересующую услугу:",
+    await event.answer(
+        new_text="📋 **Наши услуги:**\n\n"
+        "• 🚀 Разработка сайтов и приложений\n"
+        "• 🎨 Графический и веб-дизайн\n"
+        "• 📈 Маркетинг и продвижение\n\n"
+        "Выберите интересующую услугу:",
         parse_mode="Markdown",
-        attachments=[get_services_keyboard().as_markup()]
+        new_reply_markup=get_services_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "menu_prices")
 async def callback_prices(event: MessageCallback):
     """Обработка нажатия на кнопку 'Цены'."""
-    await event.message.edit_text(
-        text="💰 **Наши цены:**\n\n"
-             "• 🚀 Разработка: от 50 000 ₽\n"
-             "• 🎨 Дизайн: от 20 000 ₽\n"
-             "• 📈 Маркетинг: от 30 000 ₽\n\n"
-             "Уточните детали у менеджера!",
+    await event.answer(
+        new_text="💰 **Наши цены:**\n\n"
+        "• 🚀 Разработка: от 50 000 ₽\n"
+        "• 🎨 Дизайн: от 20 000 ₽\n"
+        "• 📈 Маркетинг: от 30 000 ₽\n\n"
+        "Уточните детали у менеджера!",
         parse_mode="Markdown",
-        attachments=[get_prices_keyboard().as_markup()]
+        new_reply_markup=get_prices_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "menu_contacts")
 async def callback_contacts(event: MessageCallback):
     """Обработка нажатия на кнопку 'Контакты'."""
-    await event.message.edit_text(
-        text="📞 **Контакты:**\n\n"
-             "📧 Email: info@maxbot.ru\n"
-             "📱 Телефон: +7 (999) 123-45-67\n"
-             "📍 Адрес: г. Москва, ул. Примерная, д. 1\n\n"
-             "Выберите способ связи:",
+    await event.answer(
+        new_text="📞 **Контакты:**\n\n"
+        "📧 Email: info@maxbot.ru\n"
+        "📱 Телефон: +7 (999) 123-45-67\n"
+        "📍 Адрес: г. Москва, ул. Примерная, д. 1\n\n"
+        "Выберите способ связи:",
         parse_mode="Markdown",
-        attachments=[get_contacts_keyboard().as_markup()]
+        new_reply_markup=get_contacts_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "menu_about")
 async def callback_about(event: MessageCallback):
@@ -422,131 +394,122 @@ async def callback_about(event: MessageCallback):
         "✅ Команды\n"
         "✅ Обработку callback-запросов"
     )
-
-    await event.message.edit_text(text=text, parse_mode="Markdown")
-
+    
+    await event.answer(new_text=text, parse_mode="Markdown")
 
 @dp.message_callback(F.callback.payload == "back_to_main")
 async def callback_back_to_main(event: MessageCallback):
     """Обработка нажатия на кнопку 'Назад'."""
     text = "📋 **Главное меню:**\n\nВыберите раздел:"
-
-    await event.message.edit_text(
-        text=text,
+    
+    await event.answer(
+        new_text=text,
         parse_mode="Markdown",
-        attachments=[get_main_menu_keyboard().as_markup()]
+        new_reply_markup=get_main_menu_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "service_dev")
 async def callback_service_dev(event: MessageCallback):
     """Обработка нажатия на кнопку 'Разработка'."""
-    await event.message.edit_text(
-        text="🚀 **Услуга: Разработка**\n\n"
-             "Мы создаем:\n"
-             "• Сайты любой сложности\n"
-             "• Мобильные приложения\n"
-             "• Веб-сервисы и платформы\n\n"
-             "Стоимость: от 50 000 ₽\n"
-             "Сроки: от 2 недель\n\n"
-             "Хотите заказать? Напишите менеджеру!",
+    await event.answer(
+        new_text="🚀 **Услуга: Разработка**\n\n"
+        "Мы создаем:\n"
+        "• Сайты любой сложности\n"
+        "• Мобильные приложения\n"
+        "• Веб-сервисы и платформы\n\n"
+        "Стоимость: от 50 000 ₽\n"
+        "Сроки: от 2 недель\n\n"
+        "Хотите заказать? Напишите менеджеру!",
         parse_mode="Markdown",
-        attachments=[get_services_keyboard().as_markup()]
+        new_reply_markup=get_services_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "service_design")
 async def callback_service_design(event: MessageCallback):
     """Обработка нажатия на кнопку 'Дизайн'."""
-    await event.message.edit_text(
-        text="🎨 **Услуга: Дизайн**\n\n"
-             "Мы создаем:\n"
-             "• Логотипы и айдентику\n"
-             "• Веб-дизайн\n"
-             "• Графику для соцсетей\n\n"
-             "Стоимость: от 20 000 ₽\n"
-             "Сроки: от 1 недели\n\n"
-             "Хотите заказать? Напишите менеджеру!",
+    await event.answer(
+        new_text="🎨 **Услуга: Дизайн**\n\n"
+        "Мы создаем:\n"
+        "• Логотипы и айдентику\n"
+        "• Веб-дизайн\n"
+        "• Графику для соцсетей\n\n"
+        "Стоимость: от 20 000 ₽\n"
+        "Сроки: от 1 недели\n\n"
+        "Хотите заказать? Напишите менеджеру!",
         parse_mode="Markdown",
-        attachments=[get_services_keyboard().as_markup()]
+        new_reply_markup=get_services_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "service_marketing")
 async def callback_service_marketing(event: MessageCallback):
     """Обработка нажатия на кнопку 'Маркетинг'."""
-    await event.message.edit_text(
-        text="📈 **Услуга: Маркетинг**\n\n"
-             "Мы предлагаем:\n"
-             "• Контекстную рекламу\n"
-             "• SEO-продвижение\n"
-             "• SMM и таргетинг\n\n"
-             "Стоимость: от 30 000 ₽\n"
-             "Сроки: от 1 месяца\n\n"
-             "Хотите заказать? Напишите менеджеру!",
+    await event.answer(
+        new_text="📈 **Услуга: Маркетинг**\n\n"
+        "Мы предлагаем:\n"
+        "• Контекстную рекламу\n"
+        "• SEO-продвижение\n"
+        "• SMM и таргетинг\n\n"
+        "Стоимость: от 30 000 ₽\n"
+        "Сроки: от 1 месяца\n\n"
+        "Хотите заказать? Напишите менеджеру!",
         parse_mode="Markdown",
-        attachments=[get_services_keyboard().as_markup()]
+        new_reply_markup=get_services_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "prices_tariffs")
 async def callback_prices_tariffs(event: MessageCallback):
     """Обработка нажатия на кнопку 'Тарифы'."""
-    await event.message.edit_text(
-        text="💳 **Тарифы:**\n\n"
-             "• 🥉 Базовый: 50 000 ₽\n"
-             "• 🥈 Стандарт: 100 000 ₽\n"
-             "• 🥇 Премиум: 200 000 ₽\n\n"
-             "Выберите подходящий тариф или уточните детали у менеджера!",
+    await event.answer(
+        new_text="💳 **Тарифы:**\n\n"
+        "• 🥉 Базовый: 50 000 ₽\n"
+        "• 🥈 Стандарт: 100 000 ₽\n"
+        "• 🥇 Премиум: 200 000 ₽\n\n"
+        "Выберите подходящий тариф или уточните детали у менеджера!",
         parse_mode="Markdown",
-        attachments=[get_prices_keyboard().as_markup()]
+        new_reply_markup=get_prices_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "prices_payment")
 async def callback_prices_payment(event: MessageCallback):
     """Обработка нажатия на кнопку 'Оплата'."""
-    await event.message.edit_text(
-        text="💳 **Способы оплаты:**\n\n"
-             "• Банковская карта\n"
-             "• Банковский перевод\n"
-             "• Электронные деньги\n\n"
-             "Оплата производится после подписания договора.",
+    await event.answer(
+        new_text="💳 **Способы оплаты:**\n\n"
+        "• Банковская карта\n"
+        "• Банковский перевод\n"
+        "• Электронные деньги\n\n"
+        "Оплата производится после подписания договора.",
         parse_mode="Markdown",
-        attachments=[get_prices_keyboard().as_markup()]
+        new_reply_markup=get_prices_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "contact_email")
 async def callback_contact_email(event: MessageCallback):
     """Обработка нажатия на кнопку 'Написать на почту'."""
-    await event.message.edit_text(
-        text="📧 **Напишите нам на почту:**\n\n"
-             "info@maxbot.ru\n\n"
-             "Мы ответим в течение 24 часов!",
+    await event.answer(
+        new_text="📧 **Напишите нам на почту:**\n\n"
+        "info@maxbot.ru\n\n"
+        "Мы ответим в течение 24 часов!",
         parse_mode="Markdown",
-        attachments=[get_contacts_keyboard().as_markup()]
+        new_reply_markup=get_contacts_keyboard().as_markup()
     )
-
 
 @dp.message_callback(F.callback.payload == "contact_phone")
 async def callback_contact_phone(event: MessageCallback):
     """Обработка нажатия на кнопку 'Позвонить'."""
-    await event.message.edit_text(
-        text="📞 **Позвоните нам:**\n\n"
-             "+7 (999) 123-45-67\n\n"
-             "Работаем с 9:00 до 18:00 (МСК)",
+    await event.answer(
+        new_text="📞 **Позвоните нам:**\n\n"
+        "+7 (999) 123-45-67\n\n"
+        "Работаем с 9:00 до 18:00 (МСК)",
         parse_mode="Markdown",
-        attachments=[get_contacts_keyboard().as_markup()]
+        new_reply_markup=get_contacts_keyboard().as_markup()
     )
-
 
 # --- Запуск бота ---
 
 async def main():
     """Основная функция запуска бота."""
     logger.info("Запуск бота...")
-
+    
     # Установить команды бота (появятся в меню)
     try:
         await bot.set_my_commands([
@@ -561,10 +524,10 @@ async def main():
         logger.info("Команды бота установлены")
     except Exception as e:
         logger.error(f"Не удалось установить команды бота: {e}")
-
+    
     # Запуск бота в режиме webhook (рекомендуется для продакшена)
     # Для локального тестирования можно использовать start_polling()
-
+    
     webhook_url = os.getenv("MAX_WEBHOOK_URL")
     if webhook_url:
         logger.info(f"Запуск в режиме webhook: {webhook_url}")
@@ -574,7 +537,6 @@ async def main():
         logger.info("Запуск в режиме polling (локальное тестирование)")
         logger.warning("Установите переменную окружения MAX_WEBHOOK_URL для работы через webhook")
         await dp.start_polling(bot)
-
 
 if __name__ == "__main__":
     try:
