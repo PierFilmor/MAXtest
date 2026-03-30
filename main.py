@@ -338,45 +338,49 @@ async def on_default_text(event: MessageCreated):
 @dp.message_callback(F.callback.payload == "menu_services")
 async def callback_services(event: MessageCallback):
     """Обработка нажатия на кнопку 'Услуги'."""
-    await event.answer(
-        new_text="📋 Наши услуги:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="📋 Наши услуги:\n\n"
         "• 🚀 Разработка сайтов и приложений\n"
         "• 🎨 Графический и веб-дизайн\n"
         "• 📈 Маркетинг и продвижение\n\n"
         "Выберите интересующую услугу:",
-        new_reply_markup=get_services_keyboard().as_markup()
+        attachments=[get_services_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "menu_prices")
 async def callback_prices(event: MessageCallback):
     """Обработка нажатия на кнопку 'Цены'."""
-    await event.answer(
-        new_text="💰 Наши цены:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="💰 Наши цены:\n\n"
         "• 🚀 Разработка: от 50 000 ₽\n"
         "• 🎨 Дизайн: от 20 000 ₽\n"
         "• 📈 Маркетинг: от 30 000 ₽\n\n"
         "Уточните детали у менеджера!",
-        new_reply_markup=get_prices_keyboard().as_markup()
+        attachments=[get_prices_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "menu_contacts")
 async def callback_contacts(event: MessageCallback):
     """Обработка нажатия на кнопку 'Контакты'."""
-    await event.answer(
-        new_text="📞 Контакты:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="📞 Контакты:\n\n"
         "📧 Email: info@maxbot.ru\n"
         "📱 Телефон: +7 (999) 123-45-67\n"
         "📍 Адрес: г. Москва, ул. Примерная, д. 1\n\n"
         "Выберите способ связи:",
-        new_reply_markup=get_contacts_keyboard().as_markup()
+        attachments=[get_contacts_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "menu_about")
 async def callback_about(event: MessageCallback):
     """Обработка нажатия на кнопку 'О боте'."""
+    await event.message.delete()
     text = (
-        "ℹ️ **О боте:**\n\n"
-        "Это тестовый бот для мессенджера MAX, созданный на библиотеке `maxapi`.\n\n"
+        "ℹ️ О боте:\n\n"
+        "Это тестовый бот для мессенджера MAX, созданный на библиотеке maxapi.\n\n"
         "• Версия: 1.0.0\n"
         "• Создан: 2026\n"
         "• Технологии: Python, maxapi, asyncio\n\n"
@@ -387,23 +391,25 @@ async def callback_about(event: MessageCallback):
         "✅ Обработку callback-запросов"
     )
     
-    await event.answer(new_text=text)
+    await event.message.answer(text=text, attachments=[get_main_menu_keyboard().as_markup()])
 
 @dp.message_callback(F.callback.payload == "back_to_main")
 async def callback_back_to_main(event: MessageCallback):
     """Обработка нажатия на кнопку 'Назад'."""
+    await event.message.delete()
     text = "📋 Главное меню:\n\nВыберите раздел:"
     
-    await event.answer(
-        new_text=text,
-        new_reply_markup=get_main_menu_keyboard().as_markup()
+    await event.message.answer(
+        text=text,
+        attachments=[get_main_menu_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "service_dev")
 async def callback_service_dev(event: MessageCallback):
     """Обработка нажатия на кнопку 'Разработка'."""
-    await event.answer(
-        new_text="🚀 Услуга: Разработка\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="🚀 Услуга: Разработка\n\n"
         "Мы создаем:\n"
         "• Сайты любой сложности\n"
         "• Мобильные приложения\n"
@@ -411,14 +417,15 @@ async def callback_service_dev(event: MessageCallback):
         "Стоимость: от 50 000 ₽\n"
         "Сроки: от 2 недель\n\n"
         "Хотите заказать? Напишите менеджеру!",
-        new_reply_markup=get_services_keyboard().as_markup()
+        attachments=[get_services_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "service_design")
 async def callback_service_design(event: MessageCallback):
     """Обработка нажатия на кнопку 'Дизайн'."""
-    await event.answer(
-        new_text="🎨 Услуга: Дизайн\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="🎨 Услуга: Дизайн\n\n"
         "Мы создаем:\n"
         "• Логотипы и айдентику\n"
         "• Веб-дизайн\n"
@@ -426,14 +433,15 @@ async def callback_service_design(event: MessageCallback):
         "Стоимость: от 20 000 ₽\n"
         "Сроки: от 1 недели\n\n"
         "Хотите заказать? Напишите менеджеру!",
-        new_reply_markup=get_services_keyboard().as_markup()
+        attachments=[get_services_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "service_marketing")
 async def callback_service_marketing(event: MessageCallback):
     """Обработка нажатия на кнопку 'Маркетинг'."""
-    await event.answer(
-        new_text="📈 Услуга: Маркетинг\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="📈 Услуга: Маркетинг\n\n"
         "Мы предлагаем:\n"
         "• Контекстную рекламу\n"
         "• SEO-продвижение\n"
@@ -441,51 +449,55 @@ async def callback_service_marketing(event: MessageCallback):
         "Стоимость: от 30 000 ₽\n"
         "Сроки: от 1 месяца\n\n"
         "Хотите заказать? Напишите менеджеру!",
-        new_reply_markup=get_services_keyboard().as_markup()
+        attachments=[get_services_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "prices_tariffs")
 async def callback_prices_tariffs(event: MessageCallback):
     """Обработка нажатия на кнопку 'Тарифы'."""
-    await event.answer(
-        new_text="💳 Тарифы:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="💳 Тарифы:\n\n"
         "• 🥉 Базовый: 50 000 ₽\n"
         "• 🥈 Стандарт: 100 000 ₽\n"
         "• 🥇 Премиум: 200 000 ₽\n\n"
         "Выберите подходящий тариф или уточните детали у менеджера!",
-        new_reply_markup=get_prices_keyboard().as_markup()
+        attachments=[get_prices_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "prices_payment")
 async def callback_prices_payment(event: MessageCallback):
     """Обработка нажатия на кнопку 'Оплата'."""
-    await event.answer(
-        new_text="💳 Способы оплаты:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="💳 Способы оплаты:\n\n"
         "• Банковская карта\n"
         "• Банковский перевод\n"
         "• Электронные деньги\n\n"
         "Оплата производится после подписания договора.",
-        new_reply_markup=get_prices_keyboard().as_markup()
+        attachments=[get_prices_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "contact_email")
 async def callback_contact_email(event: MessageCallback):
     """Обработка нажатия на кнопку 'Написать на почту'."""
-    await event.answer(
-        new_text="📧 Напишите нам на почту:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="📧 Напишите нам на почту:\n\n"
         "info@maxbot.ru\n\n"
         "Мы ответим в течение 24 часов!",
-        new_reply_markup=get_contacts_keyboard().as_markup()
+        attachments=[get_contacts_keyboard().as_markup()]
     )
 
 @dp.message_callback(F.callback.payload == "contact_phone")
 async def callback_contact_phone(event: MessageCallback):
     """Обработка нажатия на кнопку 'Позвонить'."""
-    await event.answer(
-        new_text="📞 Позвоните нам:\n\n"
+    await event.message.delete()
+    await event.message.answer(
+        text="📞 Позвоните нам:\n\n"
         "+7 (999) 123-45-67\n\n"
         "Работаем с 9:00 до 18:00 (МСК)",
-        new_reply_markup=get_contacts_keyboard().as_markup()
+        attachments=[get_contacts_keyboard().as_markup()]
     )
 
 # --- Запуск бота ---
